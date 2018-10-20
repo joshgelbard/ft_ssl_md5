@@ -8,7 +8,7 @@ int main(int argc, char **argv) {
         puts("give an argument string");
         exit(0);
     }
-	char *algo_name = "md5";
+	char *algo_name = "sha256";
     char *input_arg = argv[1];
 	define_digest_algorithms();
 	do_hash_digest(algo_name, input_arg);

@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include "hash_algorithm.h"
 #include "md5.h"
+#include "sha256.h"
 
 static struct s_hash_algorithm **g_algos;
 
@@ -24,4 +25,5 @@ void define_digest_algorithms(void)
 	g_algos = malloc(HASH_ALGORITHM_COUNT * sizeof(struct s_hash_algorithm *));
 	g_algos[HASH_ALGORITHM_COUNT] = NULL;
 	g_algos[0] = define_md5_algorithm();
+	g_algos[1] = define_sha256_algorithm();
 }

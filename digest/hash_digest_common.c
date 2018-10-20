@@ -3,14 +3,30 @@
 #include "hash_ctx.h"
 #include "reverse_byte_order.h"
 #include "memprint.h"
+#include "debug.h"
 
 char *hash_get_string(struct s_hash_ctx *this)
 {
-	char *s;
+	unsigned char *b;
+	char	*s;
+	int		i;
 
+	b = malloc(this->class->digest_size);
+	memcpy(b, this->digest, this->class->digest_size);
+	if (this->class->is_big_endian)
+	{
+		i = 0;
+		while (i < this->class->digest_size / this->class->word_size)
+		{
+			reverse_byte_order(b + i * this->class->word_size,
+					this->class->word_size);
+			i++;
+		}
+	}
 	s = malloc(this->class->digest_size * 2 + 1);
-	mem2string(this->digest, this->class->digest_size, s);
-	return s;
+	mem2string(b, this->class->digest_size, s);
+	free(b);
+	return (s);
 }
 
 void hash_initialize(struct s_hash_algorithm *class,

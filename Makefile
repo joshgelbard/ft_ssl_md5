@@ -1,5 +1,5 @@
 CC = gcc
-CFLAGS += -Wall -Wextra -pedantic
+CFLAGS += -Wall -Wextra -pedantic -Werror
 CPPFLAGS += -MMD
 
 NAME = ft_ssl
@@ -13,6 +13,8 @@ OBJECTS = \
 		  md5_internal.o \
 		  memprint.o \
 		  reverse_byte_order.o \
+		  sha256_digest.o \
+		  sha256_internal.o \
 
 MODULES = \
 		  digest \
@@ -25,7 +27,6 @@ VPATH = $(MODULES)
 
 CFLAGS += $(addprefix -I, $(MODULES)) -I.
 
-all: CFLAGS += -Werror
 all: $(NAME)
 
 $(NAME): $(NAME).o $(OBJECTS)
@@ -38,14 +39,16 @@ fclean: clean
 
 re: fclean all
 	
-dev: CFLAGS += -include assert.h -include stdio.h
+dev: CFLAGS += -include string.h -include assert.h -include stdio.h -Wno-error
 dev: all
 redev: fclean dev
 
 TEST_MAIN = test-runner
-TEST_OBJECTS = test_md5_digest.o \
+TEST_OBJECTS = \
+			   test_md5_digest.o \
+			   test_sha256_digest.o \
 
-test: CFLAGS += -include assert.h -include stdio.h
+test: CFLAGS += -include string.h -include assert.h -include stdio.h -Wno-error
 test: $(TEST_MAIN)
 $(TEST_MAIN): $(TEST_MAIN).o $(TEST_OBJECTS) $(OBJECTS)
 retest: fclean test
