@@ -9,9 +9,8 @@ OBJECTS = \
 		  debug.o \
 		  digest.o \
 		  hash_digest_common.o \
-		  md5_basic_transforms.o \
 		  md5_digest.o \
-		  md5_value_tables.o \
+		  md5_internal.o \
 		  memprint.o \
 		  reverse_byte_order.o \
 
@@ -20,6 +19,7 @@ MODULES = \
 		  md5 \
 		  test \
 		  util \
+		  sha256 \
 
 VPATH = $(MODULES)
 

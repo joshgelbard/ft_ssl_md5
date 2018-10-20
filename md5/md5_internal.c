@@ -1,4 +1,4 @@
-#include "md5.h"
+#include <stdint.h>
 #include "md5_internal.h"
 
 uint32_t md5_T[64] = {
@@ -33,3 +33,23 @@ int md5_K[4][16] = {
         { 5, 8, 11, 14, 1, 4, 7, 10, 13, 0, 3, 6, 9, 12, 15, 2 },
         { 0, 7, 14, 5, 12, 3, 10, 1, 8, 15, 6, 13, 4, 11, 2, 9 }
 };
+
+uint32_t md5_F(uint32_t x, uint32_t y, uint32_t z)
+{
+    return (((x) & (y)) | ((~(x)) & (z)));
+}
+
+uint32_t md5_G(uint32_t x, uint32_t y, uint32_t z)
+{
+    return (((x) & (z)) | ((y) & (~(z))));
+}
+
+uint32_t md5_H(uint32_t x, uint32_t y, uint32_t z)
+{
+    return ((x) ^ (y) ^ (z));
+}
+
+uint32_t md5_I(uint32_t x, uint32_t y, uint32_t z)
+{
+    return ((y) ^ ((x) | (~(z))));
+}
