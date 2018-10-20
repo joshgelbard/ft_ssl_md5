@@ -7,9 +7,9 @@
 void test_md5_digest()
 {
 	printf("%s... ", __func__);
-	struct s_hash_algorithm md5;
+	struct s_hash_algorithm *md5;
 
-	define_md5_algorithm(&md5);
+	md5 = define_md5_algorithm();
 	char *md5_tests[7][2] = {
 		{"", "d41d8cd98f00b204e9800998ecf8427e" },
 		{"a", "0cc175b9c0f1b6a831c399e269772661" },
@@ -23,7 +23,7 @@ void test_md5_digest()
 	for (int i = 0; i < 7; i++)
 	{
 		char *input = md5_tests[i][0];
-		hash_initialize(&md5, &ctx);
+		hash_initialize(md5, &ctx);
 		hash_update(&ctx, input, strlen(input));
 		hash_finalize(&ctx);
 		char *expected = md5_tests[i][1];
