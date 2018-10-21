@@ -2,13 +2,6 @@
 # define HASH_ALGORITHM_CLASS_H
 # include <string.h>
 
-enum e_hash_algorithm
-{
-	MD5,
-	SHA256,
-	HASH_ALGORITHM_COUNT
-};
-
 struct s_hash_ctx;
 
 struct s_hash_algorithm

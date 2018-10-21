@@ -1,8 +1,9 @@
 #include <stdint.h>
+#include "algorithm_lookup.h"
 #include "hash_ctx.h"
 #include "hash_algorithm.h"
 #include "sha256_internal.h"
-#include "reverse_byte_order.h"
+#include "util.h"
 
 static void set_initial_digest_values(struct s_hash_ctx *this)
 {
@@ -63,14 +64,14 @@ void fill_message_schedule(struct s_hash_ctx *this)
 
 static void sha256_process_block(struct s_hash_ctx *this)
 {
-	int	i;
+	size_t		i;
 	uint32_t	*digest;
 	uint32_t	digest_store[8];
 	uint32_t	tmp[2];
 
 	fill_message_schedule(this);
 	digest = (uint32_t *)(this->digest);
-	memcpy(digest_store, digest, sizeof(digest_store));
+	xmemcpy(digest_store, digest, sizeof(digest_store));
 	i = 0;
 	while (i < 64)
 	{

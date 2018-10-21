@@ -1,9 +1,11 @@
 #include "md5.h"
 #include "md5_internal.h"
+#include "algorithm_lookup.h"
 #include "hash_algorithm.h"
 #include "hash_ctx.h"
 #include <stdint.h>
 #include <string.h>
+#include "util.h"
 
 #define A digest[(0 + (4 - step % 4)) % 4]
 #define B digest[(1 + (4 - step % 4)) % 4]
@@ -43,7 +45,7 @@ static void md5_process_block(struct s_hash_ctx *this)
 
 	digest = this->digest;
 	block = (uint32_t *)(this->block);
-	memcpy(digest_store, digest, sizeof(digest_store));
+	xmemcpy(digest_store, digest, sizeof(digest_store));
 	round = 0;
 	while (round < 4)
 	{

@@ -32,5 +32,6 @@ void test_md5_digest()
 //				i, input, strlen(input), got, expected);
 		assert(!strcmp(expected, got));
 	}
+	printf("ok\n");
 }
 

@@ -15,6 +15,18 @@ OBJECTS = \
 		  reverse_byte_order.o \
 		  sha256_digest.o \
 		  sha256_internal.o \
+		  ft_ssl_module_interface.o \
+		  md_module.o \
+		  md_module_internal.o \
+		  md_digesters.o \
+		  md_module_output.o \
+		  xputs.o \
+		  xprint.o \
+		  xstrlen.o \
+		  xstrcmp.o \
+		  xmemcpy.o \
+		  zalloc.o \
+		  xzero.o \
 
 MODULES = \
 		  digest \
@@ -22,6 +34,8 @@ MODULES = \
 		  test \
 		  util \
 		  sha256 \
+		  md_module \
+		  module_type \
 
 VPATH = $(MODULES)
 

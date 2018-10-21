@@ -1,18 +1,17 @@
 #include "hash_digest_common.h"
 #include "hash_algorithm.h"
 #include "hash_ctx.h"
-#include "reverse_byte_order.h"
-#include "memprint.h"
+#include "util.h"
 #include "debug.h"
 
 char *hash_get_string(struct s_hash_ctx *this)
 {
-	unsigned char *b;
-	char	*s;
-	int		i;
+	unsigned char	*b;
+	char			*s;
+	size_t			i;
 
 	b = malloc(this->class->digest_size);
-	memcpy(b, this->digest, this->class->digest_size);
+	xmemcpy(b, this->digest, this->class->digest_size);
 	if (this->class->is_big_endian)
 	{
 		i = 0;
@@ -32,8 +31,8 @@ char *hash_get_string(struct s_hash_ctx *this)
 void hash_initialize(struct s_hash_algorithm *class,
 		struct s_hash_ctx *instance)
 {
-	instance->digest = calloc(class->digest_size, 1);
-	instance->block = calloc(class->block_size, 1);
+	instance->digest = zalloc(class->digest_size);
+	instance->block = zalloc(class->block_size);
 	instance->block_offset = 0;
 	instance->processed_blocks = 0;
 	instance->message_bitsize = 0;
@@ -51,7 +50,7 @@ void hash_update(struct s_hash_ctx *this,
 	data = (unsigned char *)p;
 	while (data_len >= block_size || this->block_offset + data_len >= block_size)
 	{
-		memcpy(this->block + this->block_offset,
+		xmemcpy(this->block + this->block_offset,
 				data, block_size - this->block_offset);
 		this->class->process_block(this);
 		this->processed_blocks++;
@@ -59,16 +58,14 @@ void hash_update(struct s_hash_ctx *this,
 		data += block_size;
 		data_len -= block_size;
 		this->message_bitsize += 8 * block_size;
-		bzero(this->block, block_size);
+		xzero(this->block, block_size);
 	}
 	if (data_len > 0)
 	{
-		memcpy(this->block + this->block_offset, data, data_len);
+		xmemcpy(this->block + this->block_offset, data, data_len);
 		this->block_offset += data_len;
 		this->message_bitsize += 8 * data_len;
-		assert(this->block_offset < block_size);
 	}
-	assert(this->block_offset < block_size);
 }
 
 static void append_length(struct s_hash_ctx *this)
@@ -77,7 +74,7 @@ static void append_length(struct s_hash_ctx *this)
 	unsigned char *w0;
 	unsigned char *w1;
 
-	memcpy(&length_in_two_words, &this->message_bitsize,
+	xmemcpy(&length_in_two_words, &this->message_bitsize,
 			sizeof(this->message_bitsize));
 	if (this->class->is_big_endian)
 	{
@@ -91,9 +88,9 @@ static void append_length(struct s_hash_ctx *this)
 		w0 = length_in_two_words;
 		w1 = length_in_two_words + this->class->word_size;
 	}
-	memcpy(this->block + this->class->block_size - this->class->word_size,
+	xmemcpy(this->block + this->class->block_size - this->class->word_size,
 			w1, this->class->word_size);
-	memcpy(this->block + this->class->block_size - this->class->word_size * 2,
+	xmemcpy(this->block + this->class->block_size - this->class->word_size * 2,
 			w0, this->class->word_size);
 }
 
@@ -102,19 +99,18 @@ void hash_finalize(struct s_hash_ctx *this)
 	size_t block_size;
 	
 	block_size = this->class->block_size;
-	assert(this->block_offset < block_size);
 	this->block[this->block_offset] = 0x80;
 	this->block_offset += 1;
 	if (this->block_offset + this->class->word_size * 2 >= block_size)
 	{
 		if (this->block_offset != block_size)
-			bzero(this->block + this->block_offset, block_size - this->block_offset  - 1);
+			xzero(this->block + this->block_offset, block_size - this->block_offset  - 1);
 		this->class->process_block(this);
 		this->block_offset = 0;
 		this->processed_blocks++;
-		bzero(this->block, block_size);
+		xzero(this->block, block_size);
 	}
-	bzero(this->block + this->block_offset, block_size - this->block_offset - 1 - this->class->word_size * 2);
+	xzero(this->block + this->block_offset, block_size - this->block_offset - 1 - this->class->word_size * 2);
 	append_length(this);
 	this->block_offset = 0;
 	this->class->process_block(this);

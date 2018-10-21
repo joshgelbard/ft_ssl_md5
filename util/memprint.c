@@ -1,9 +1,14 @@
-#include  "memprint.h"
+#include "util.h"
 #include <string.h>
 #include <stdio.h>
 
-// fixme: replace s?printf with homemade version and remove stdio.h
-void mem2string(void *p, size_t len, char *s)
+static void	byte2string(char *s, unsigned char b)
+{
+	s[0] = (b >> 4) < 10 ? (b >> 4) + '0' : (b >> 4) + 'a' - 10;
+	s[1] = (b & 0x0f) < 10 ? (b & 0x0f) + '0' : (b & 0x0f) + 'a' - 10;
+}
+
+void		mem2string(void *p, size_t len, char *s)
 {
 	size_t i;
 	unsigned char *pp;
@@ -12,22 +17,7 @@ void mem2string(void *p, size_t len, char *s)
 	i = 0;
 	while (i < len)
 	{
-		sprintf(s + i * 2, "%02x", pp[i]);
+		byte2string(s + i * 2, pp[i]);
 		i++;
 	}
 }
-
-void memprint(void *p, size_t len)
-{
-	unsigned char *pp;
-	size_t i;
-
-	pp = (unsigned char *)p;
-	i = 0;
-	while (i < len)
-	{
-		printf("%02x", pp[i]);
-		i++;
-	}
-}
-
