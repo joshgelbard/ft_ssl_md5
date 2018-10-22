@@ -5,6 +5,7 @@
 #include <stdlib.h>
 #include "util.h"
 #include "md_module.h"
+#include <sys/errno.h>
 
 static struct s_ft_ssl_module **g_modules;
 static struct s_ft_ssl_module *g_active_module;
@@ -47,36 +48,36 @@ static void list_available_commands(void)
 	char	**md_cmds = g_modules[MD_MODULE]->matching_commands;
 
 	int i;
-	
-	xputs("Standard commands:");
+
+	xputserr("\nStandard commands:");
 	i = 0;
 	while (std_cmds[i])
-		xputs(std_cmds[i++]);
-	xputs("\nMessage Digest commands:");
+		xputserr(std_cmds[i++]);
+	xputserr("\nMessage Digest commands:");
 	i = 0;
 	while (md_cmds[i])
-		xputs(md_cmds[i++]);
-	xputs("\nCipher commands:");
+		xputserr(md_cmds[i++]);
+	xputserr("\nCipher commands:");
 	i = 0;
 	while (cipher_cmds[i])
-		xputs(cipher_cmds[i++]);
+		xputserr(cipher_cmds[i++]);
 }
 
-void	load_module_or_exit(char *command_name)
+int		load_module(char *command_name)
 {
 	if (!command_name)
 	{
-		xputs("usage: ft_ssl command [command opts] [command args]");
-		exit(1);
+		xputserr("usage: ft_ssl command [command opts] [command args]");
+		return (-1);
 	}
 	if (!(g_active_module = get_module_for_command_name(command_name)))
 	{
-		xprint("ft_ssl: Error: ");
-		xprint(command_name);
-		xputs(" is an invalid command.");
+		errno = EINVAL;
+		xperror(command_name);
 		list_available_commands();
-		exit(1);
+		return (-1);
 	}
+	return (0);
 }
 
 int		module_run(int argc, char **argv)

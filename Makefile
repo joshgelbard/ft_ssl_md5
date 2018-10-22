@@ -19,13 +19,13 @@ OBJECTS = \
 		  md_module_internal.o \
 		  md_digesters.o \
 		  md_module_output.o \
-		  xputs.o \
 		  xprint.o \
 		  xstrlen.o \
 		  xstrcmp.o \
 		  xmemcpy.o \
 		  zalloc.o \
 		  xzero.o \
+		  xperror.o \
 
 MODULES = \
 		  digest \

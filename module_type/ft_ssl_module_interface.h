@@ -8,6 +8,6 @@ enum	e_ft_ssl_module
 };
 
 void	initialize_modules(void);
-void	load_module_or_exit(char *module_name);
+int		load_module(char *module_name);
 int		module_run(int argc, char **argv);
 #endif

@@ -52,8 +52,7 @@ static void	md_parse_arg(void)
 
 	if ((fd = open(*g_arg, O_RDONLY)) == -1)
 	{
-		xprint("couldn't open file ");
-		xputs(*g_arg);
+		xperror(*g_arg);
 	}
 	else
 	{
