@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   md5_digest.c                                       :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: jgelbard <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2018/10/22 09:07:14 by jgelbard          #+#    #+#             */
+/*   Updated: 2018/10/22 09:07:14 by jgelbard         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "md5.h"
 #include "md5_internal.h"
 #include "algorithm_lookup.h"
@@ -11,20 +23,20 @@
 #define B digest[(1 + (4 - step % 4)) % 4]
 #define C digest[(2 + (4 - step % 4)) % 4]
 #define D digest[(3 + (4 - step % 4)) % 4]
-#define F md5_F
-#define G md5_G
-#define H md5_H
-#define I md5_I
-#define K md5_K
-#define S md5_S
-#define T md5_T
+#define F g_md5_f
+#define G g_md5_g
+#define H g_md5_h
+#define I g_md5_i
+#define K g_md5_k
+#define S g_md5_s
+#define T g_md5_t
 #define LEFT_ROTATE(x, n) (((x) << (n)) | (((x) & 0xffffffff) >> (32 - (n))))
 
-typedef uint32_t (*t_md5_basic_transform)(uint32_t, uint32_t, uint32_t);
+typedef uint32_t	(*t_md5_basic_transform)(uint32_t, uint32_t, uint32_t);
 
 t_md5_basic_transform g_transform[4] = { &F, &G, &H, &I };
 
-static void set_initial_digest_values(struct s_hash_ctx *this)
+static void				set_initial_digest_values(struct s_hash_ctx *this)
 {
 	uint32_t *digest;
 
@@ -35,13 +47,25 @@ static void set_initial_digest_values(struct s_hash_ctx *this)
 	digest[3] = 0x10325476;
 }
 
-static void md5_process_block(struct s_hash_ctx *this)
+static void				combine_digest_with_store(uint32_t *d, uint32_t *s)
 {
-	int round;
-	int step;
-	uint32_t *digest;
-	uint32_t *block;
-	uint32_t digest_store[4];
+	int	i;
+
+	i = 0;
+	while (i < 4)
+	{
+		d[i] += s[i];
+		i++;
+	}
+}
+
+static void				md5_process_block(struct s_hash_ctx *this)
+{
+	int			round;
+	int			step;
+	uint32_t	*digest;
+	uint32_t	*block;
+	uint32_t	digest_store[4];
 
 	digest = this->digest;
 	block = (uint32_t *)(this->block);
@@ -59,13 +83,10 @@ static void md5_process_block(struct s_hash_ctx *this)
 		}
 		round++;
 	}
-	digest[0] += digest_store[0];
-	digest[1] += digest_store[1];
-	digest[2] += digest_store[2];
-	digest[3] += digest_store[3];
+	combine_digest_with_store(digest, digest_store);
 }
 
-struct s_hash_algorithm *define_md5_algorithm(void)
+struct s_hash_algorithm	*define_md5_algorithm(void)
 {
 	struct s_hash_algorithm	*md5;
 
@@ -73,7 +94,7 @@ struct s_hash_algorithm *define_md5_algorithm(void)
 	md5->is_big_endian = 0;
 	md5->process_block = &md5_process_block;
 	md5->finish_initialize = &set_initial_digest_values;
-	md5->digest_size= 16;
+	md5->digest_size = 16;
 	md5->word_size = 4;
 	md5->block_size = 64;
 	md5->algorithm_name = "md5";

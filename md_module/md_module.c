@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   md_module.c                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: jgelbard <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2018/10/22 09:07:11 by jgelbard          #+#    #+#             */
+/*   Updated: 2018/10/22 09:07:11 by jgelbard         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "md_module.h"
 #include "ft_ssl_module_interface.h"
 #include "ft_ssl_module.h"
@@ -11,20 +23,16 @@
 #include "md_digesters.h"
 #include "util.h"
 
-static int		g_argc;
-static char		**g_argv;
-static char		**g_arg;
+static int				g_argc;
+static char				**g_argv;
+static char				**g_arg;
 
-static void	md_parse_option()
+static void				md_parse_option(void)
 {
 	if (!xstrcmp(*g_arg, "-r"))
-	{
 		g_md_io_opts.digest_before_tag = 1;
-	}
 	else if (!xstrcmp(*g_arg, "-q"))
-	{
 		g_md_io_opts.quiet_mode = 1;
-	}
 	else if (!xstrcmp(*g_arg, "-p"))
 	{
 		g_md_io_opts.do_default_stdin = 0;
@@ -46,7 +54,7 @@ static void	md_parse_option()
 	g_arg++;
 }
 
-static void	md_parse_arg(void)
+static void				md_parse_arg(void)
 {
 	int		fd;
 
@@ -63,7 +71,7 @@ static void	md_parse_arg(void)
 	g_arg++;
 }
 
-static int		md_module_run(int argc, char **argv)
+static int				md_module_run(int argc, char **argv)
 {
 	define_digest_algorithms();
 	g_md_algo = get_hash_algorithm_by_name(argv[1]);
@@ -83,7 +91,7 @@ static int		md_module_run(int argc, char **argv)
 	return (0);
 }
 
-static char	*md_module_commands[] =
+static char				*g_md_module_commands[] =
 {
 	"md5",
 	"sha256",
@@ -95,9 +103,8 @@ struct s_ft_ssl_module	*initialize_md_module(void)
 	struct s_ft_ssl_module	*md_module;
 
 	md_module = zalloc(sizeof(*md_module));
-
 	md_module->module_id = MD_MODULE;
-	md_module->matching_commands = md_module_commands;
+	md_module->matching_commands = g_md_module_commands;
 	md_module->run = &md_module_run;
 	return (md_module);
 }

@@ -1,10 +1,21 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   hash_digest_common.c                               :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: jgelbard <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2018/10/22 09:07:17 by jgelbard          #+#    #+#             */
+/*   Updated: 2018/10/22 09:07:17 by jgelbard         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "hash_digest_common.h"
 #include "hash_algorithm.h"
 #include "hash_ctx.h"
 #include "util.h"
-#include "debug.h"
 
-char *hash_get_string(struct s_hash_ctx *this)
+char		*hash_get_string(struct s_hash_ctx *this)
 {
 	unsigned char	*b;
 	char			*s;
@@ -28,7 +39,7 @@ char *hash_get_string(struct s_hash_ctx *this)
 	return (s);
 }
 
-void hash_initialize(struct s_hash_algorithm *class,
+void		hash_initialize(struct s_hash_algorithm *class,
 		struct s_hash_ctx *instance)
 {
 	if (instance->digest)
@@ -44,15 +55,16 @@ void hash_initialize(struct s_hash_algorithm *class,
 	class->finish_initialize(instance);
 }
 
-void hash_update(struct s_hash_ctx *this,
+void		hash_update(struct s_hash_ctx *this,
 		void *p, size_t data_len)
 {
-	size_t block_size;
-	unsigned char *data;
+	size_t			block_size;
+	unsigned char	*data;
 
 	block_size = this->class->block_size;
 	data = (unsigned char *)p;
-	while (data_len >= block_size || this->block_offset + data_len >= block_size)
+	while (data_len >= block_size || this->block_offset + data_len >=
+			block_size)
 	{
 		xmemcpy(this->block + this->block_offset,
 				data, block_size - this->block_offset);
@@ -72,7 +84,7 @@ void hash_update(struct s_hash_ctx *this,
 	}
 }
 
-static void append_length(struct s_hash_ctx *this)
+static void	append_length(struct s_hash_ctx *this)
 {
 	unsigned char length_in_two_words[1024];
 	unsigned char *w0;
@@ -98,23 +110,25 @@ static void append_length(struct s_hash_ctx *this)
 			w0, this->class->word_size);
 }
 
-void hash_finalize(struct s_hash_ctx *this)
+void		hash_finalize(struct s_hash_ctx *this)
 {
 	size_t block_size;
-	
+
 	block_size = this->class->block_size;
 	this->block[this->block_offset] = 0x80;
 	this->block_offset += 1;
 	if (this->block_offset + this->class->word_size * 2 >= block_size)
 	{
 		if (this->block_offset != block_size)
-			xzero(this->block + this->block_offset, block_size - this->block_offset  - 1);
+			xzero(this->block + this->block_offset, block_size -
+					this->block_offset - 1);
 		this->class->process_block(this);
 		this->block_offset = 0;
 		this->processed_blocks++;
 		xzero(this->block, block_size);
 	}
-	xzero(this->block + this->block_offset, block_size - this->block_offset - 1 - this->class->word_size * 2);
+	xzero(this->block + this->block_offset, block_size - this->block_offset - 1
+			- this->class->word_size * 2);
 	append_length(this);
 	this->block_offset = 0;
 	this->class->process_block(this);

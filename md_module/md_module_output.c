@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   md_module_output.c                                 :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: jgelbard <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2018/10/22 09:07:10 by jgelbard          #+#    #+#             */
+/*   Updated: 2018/10/22 09:07:10 by jgelbard         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "md_module_output.h"
 #include <stdio.h>
 #include "md_module_internal.h"
@@ -7,7 +19,7 @@
 #include "hash_ctx.h"
 #include "util.h"
 
-char	*allcaps_algo_names[HASH_ALGORITHM_COUNT] =
+char		*g_allcaps_algo_names[HASH_ALGORITHM_COUNT] =
 {
 	[MD5] = "MD5",
 	[SHA256] = "SHA256",
@@ -17,7 +29,7 @@ static void	md_print_tag(char *tag)
 {
 	if (g_md_io_opts.digest_before_tag == 0)
 	{
-		xprint(allcaps_algo_names[g_md_ctx.class->algorithm_id]);
+		xprint(g_allcaps_algo_names[g_md_ctx.class->algorithm_id]);
 		xprint(" (");
 	}
 	else
@@ -31,7 +43,7 @@ static void	md_print_tag(char *tag)
 		xprint(") = ");
 }
 
-void	md_output(char *tag)
+void		md_output(char *tag)
 {
 	char	*digest;
 
@@ -55,4 +67,3 @@ void	md_output(char *tag)
 	}
 	free(digest);
 }
-

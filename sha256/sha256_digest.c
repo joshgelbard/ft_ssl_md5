@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   sha256_digest.c                                    :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: jgelbard <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2018/10/22 09:07:08 by jgelbard          #+#    #+#             */
+/*   Updated: 2018/10/22 09:07:08 by jgelbard         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include <stdint.h>
 #include "algorithm_lookup.h"
 #include "hash_ctx.h"
@@ -5,7 +17,7 @@
 #include "sha256_internal.h"
 #include "util.h"
 
-static void set_initial_digest_values(struct s_hash_ctx *this)
+static void				set_initial_digest_values(struct s_hash_ctx *this)
 {
 	uint32_t *digest;
 
@@ -20,14 +32,14 @@ static void set_initial_digest_values(struct s_hash_ctx *this)
 	digest[7] = 0x5be0cd19;
 }
 
-static uint32_t g_message_schedule[64];
-#define SSIG1(x) sha256_SSIG(x, 17, 19, 10)
-#define SSIG0(x) sha256_SSIG(x, 7, 18, 3)
-#define BSIG0(x) sha256_BSIG(x, 2, 13, 22)
-#define BSIG1(x) sha256_BSIG(x, 6, 11, 25)
-#define CH sha256_CH
-#define K sha256_K
-#define MAJ sha256_MAJ
+static uint32_t			g_message_schedule[64];
+#define SSIG1(x) g_sha256_ssig(x, 17, 19, 10)
+#define SSIG0(x) g_sha256_ssig(x, 7, 18, 3)
+#define BSIG0(x) g_sha256_bsig(x, 2, 13, 22)
+#define BSIG1(x) g_sha256_bsig(x, 6, 11, 25)
+#define CH g_sha256_ch
+#define K g_sha256_k
+#define MAJ g_sha256_maj
 #define W g_message_schedule
 #define A digest[0]
 #define B digest[1]
@@ -38,7 +50,7 @@ static uint32_t g_message_schedule[64];
 #define G digest[6]
 #define H digest[7]
 
-void fill_message_schedule(struct s_hash_ctx *this)
+void					fill_message_schedule(struct s_hash_ctx *this)
 {
 	uint32_t	*block;
 	int			i;
@@ -62,12 +74,27 @@ void fill_message_schedule(struct s_hash_ctx *this)
 	}
 }
 
-static void sha256_process_block(struct s_hash_ctx *this)
+static void				do_one_block_process_step(uint32_t *digest, int i)
+{
+	uint32_t	tmp[2];
+
+	tmp[0] = H + BSIG1(E) + CH(E, F, G) + K[i] + W[i];
+	tmp[1] = BSIG0(A) + MAJ(A, B, C);
+	H = G;
+	G = F;
+	F = E;
+	E = D + tmp[0];
+	D = C;
+	C = B;
+	B = A;
+	A = tmp[0] + tmp[1];
+}
+
+static void				sha256_process_block(struct s_hash_ctx *this)
 {
 	size_t		i;
 	uint32_t	*digest;
 	uint32_t	digest_store[8];
-	uint32_t	tmp[2];
 
 	fill_message_schedule(this);
 	digest = (uint32_t *)(this->digest);
@@ -75,16 +102,7 @@ static void sha256_process_block(struct s_hash_ctx *this)
 	i = 0;
 	while (i < 64)
 	{
-		tmp[0] = H + BSIG1(E) + CH(E, F, G) + K[i] + W[i];
-		tmp[1] = BSIG0(A) + MAJ(A, B, C);
-		H = G;
-		G = F;
-		F = E;
-		E = D + tmp[0];
-		D = C;
-		C = B;
-		B = A;
-		A = tmp[0] + tmp[1];
+		do_one_block_process_step(digest, i);
 		i++;
 	}
 	i = 0;
@@ -95,7 +113,7 @@ static void sha256_process_block(struct s_hash_ctx *this)
 	}
 }
 
-struct s_hash_algorithm *define_sha256_algorithm(void)
+struct s_hash_algorithm	*define_sha256_algorithm(void)
 {
 	struct s_hash_algorithm	*sha256;
 
@@ -103,7 +121,7 @@ struct s_hash_algorithm *define_sha256_algorithm(void)
 	sha256->is_big_endian = 1;
 	sha256->process_block = &sha256_process_block;
 	sha256->finish_initialize = &set_initial_digest_values;
-	sha256->digest_size= 32;
+	sha256->digest_size = 32;
 	sha256->word_size = 4;
 	sha256->block_size = 64;
 	sha256->algorithm_name = "sha256";

@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   algorithm_lookup.c                                 :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: jgelbard <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2018/10/22 09:07:16 by jgelbard          #+#    #+#             */
+/*   Updated: 2018/10/22 09:07:16 by jgelbard         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "algorithm_lookup.h"
 #include <stdlib.h>
 #include "hash_algorithm.h"
@@ -5,9 +17,9 @@
 #include "sha256.h"
 #include "util.h"
 
-static struct s_hash_algorithm **g_algos;
+static struct s_hash_algorithm	**g_algos;
 
-struct s_hash_algorithm *get_hash_algorithm_by_name(char *name)
+struct s_hash_algorithm			*get_hash_algorithm_by_name(char *name)
 {
 	int	i;
 
@@ -21,7 +33,7 @@ struct s_hash_algorithm *get_hash_algorithm_by_name(char *name)
 	return (NULL);
 }
 
-struct s_hash_algorithm	*get_hash_algorithm_by_id(int id)
+struct s_hash_algorithm			*get_hash_algorithm_by_id(int id)
 {
 	int	i;
 
@@ -35,7 +47,7 @@ struct s_hash_algorithm	*get_hash_algorithm_by_id(int id)
 	return (NULL);
 }
 
-void define_digest_algorithms(void)
+void							define_digest_algorithms(void)
 {
 	g_algos = zalloc(HASH_ALGORITHM_COUNT * sizeof(struct s_hash_algorithm *));
 	g_algos[HASH_ALGORITHM_COUNT] = NULL;

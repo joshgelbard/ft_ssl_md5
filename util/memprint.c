@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   memprint.c                                         :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: jgelbard <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2018/10/22 09:07:20 by jgelbard          #+#    #+#             */
+/*   Updated: 2018/10/22 09:07:20 by jgelbard         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "util.h"
 #include <string.h>
 #include <stdio.h>
@@ -10,8 +22,8 @@ static void	byte2string(char *s, unsigned char b)
 
 void		mem2string(void *p, size_t len, char *s)
 {
-	size_t i;
-	unsigned char *pp;
+	size_t			i;
+	unsigned char	*pp;
 
 	pp = (unsigned char *)p;
 	i = 0;

@@ -1,7 +1,19 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   sha256_internal.c                                  :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: jgelbard <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2018/10/22 09:07:07 by jgelbard          #+#    #+#             */
+/*   Updated: 2018/10/22 09:07:07 by jgelbard         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include <stdint.h>
 #include "sha256_internal.h"
 
-uint32_t sha256_K[64] = {
+uint32_t g_sha256_k[64] = {
 	0x428a2f98, 0x71374491, 0xb5c0fbcf, 0xe9b5dba5,
 	0x3956c25b, 0x59f111f1, 0x923f82a4, 0xab1c5ed5,
 	0xd807aa98, 0x12835b01, 0x243185be, 0x550c7dc3,
@@ -20,24 +32,24 @@ uint32_t sha256_K[64] = {
 	0x90befffa, 0xa4506ceb, 0xbef9a3f7, 0xc67178f2
 };
 
-uint32_t sha256_CH(uint32_t x, uint32_t y, uint32_t z)
+uint32_t	g_sha256_ch(uint32_t x, uint32_t y, uint32_t z)
 {
 	return ((x) & (y)) ^ ((~(x)) & (z));
 }
 
-uint32_t sha256_MAJ(uint32_t x, uint32_t y, uint32_t z)
+uint32_t	g_sha256_maj(uint32_t x, uint32_t y, uint32_t z)
 {
 	return ((x) & (y)) ^ ((x) & (z)) ^ ((y) & (z));
 }
 
 #define ROTATE_RIGHT(x, n) (((x) >> (n)) | ((x) << (32 - n)))
 
-uint32_t sha256_BSIG(uint32_t x, int r1, int r2, int r3)
+uint32_t	g_sha256_bsig(uint32_t x, int r1, int r2, int r3)
 {
 	return (ROTATE_RIGHT(x, r1) ^ ROTATE_RIGHT(x, r2) ^ ROTATE_RIGHT(x, r3));
 }
 
-uint32_t sha256_SSIG(uint32_t x, int r1, int r2, int s)
+uint32_t	g_sha256_ssig(uint32_t x, int r1, int r2, int s)
 {
 	return (ROTATE_RIGHT(x, r1) ^ ROTATE_RIGHT(x, r2) ^ (x >> s));
 }

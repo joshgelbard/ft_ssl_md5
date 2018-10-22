@@ -6,7 +6,6 @@ NAME = ft_ssl
 
 OBJECTS = \
 		  algorithm_lookup.o \
-		  debug.o \
 		  hash_digest_common.o \
 		  md5_digest.o \
 		  md5_internal.o \

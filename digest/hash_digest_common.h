@@ -1,6 +1,19 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   hash_digest_common.h                               :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: jgelbard <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2018/10/22 09:07:15 by jgelbard          #+#    #+#             */
+/*   Updated: 2018/10/22 09:07:15 by jgelbard         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #ifndef HASH_DIGEST_COMMON_H
 # define HASH_DIGEST_COMMON_H
 # include <stdlib.h>
+
 struct s_hash_ctx;
 struct s_hash_algorithm;
 

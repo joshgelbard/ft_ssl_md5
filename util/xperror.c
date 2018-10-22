@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   xperror.c                                          :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: jgelbard <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2018/10/22 09:07:17 by jgelbard          #+#    #+#             */
+/*   Updated: 2018/10/22 09:07:17 by jgelbard         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "util.h"
 #include <sys/errno.h>
 #include <unistd.h>
@@ -6,7 +18,7 @@
 # define ELAST 255
 #endif
 
-static char *xerrlist[ELAST + 1] = {
+static char *g_xerrlist[ELAST + 1] = {
 	[0] = "No error value set (success?)",
 	[EPERM] = "Operation not permitted",
 	[ENOENT] = "No such file or directory",
@@ -104,8 +116,8 @@ void	xperror(char *s)
 		xprinterr(s);
 		xprinterr(": ");
 	}
-	if (errno > ELAST || !xerrlist[errno])
+	if (errno > ELAST || !g_xerrlist[errno])
 		xputserr("Unknown error");
 	else
-		xputserr(xerrlist[errno]);
+		xputserr(g_xerrlist[errno]);
 }

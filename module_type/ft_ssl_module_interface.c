@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_ssl_module_interface.c                          :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: jgelbard <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2018/10/22 09:07:09 by jgelbard          #+#    #+#             */
+/*   Updated: 2018/10/22 09:07:09 by jgelbard         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "ft_ssl_module_interface.h"
 #include "ft_ssl_module.h"
 #include <string.h>
@@ -7,16 +19,16 @@
 #include "md_module.h"
 #include <sys/errno.h>
 
-static struct s_ft_ssl_module **g_modules;
-static struct s_ft_ssl_module *g_active_module;
+static struct s_ft_ssl_module	**g_modules;
+static struct s_ft_ssl_module	*g_active_module;
 
-void	initialize_modules(void)
+void							initialize_modules(void)
 {
 	g_modules = zalloc(sizeof(*g_modules) * (MODULE_COUNT + 1));
 	g_modules[0] = initialize_md_module();
 }
 
-struct s_ft_ssl_module	*get_module_for_command_name(char *cmd)
+struct s_ft_ssl_module			*get_module_for_command_name(char *cmd)
 {
 	int		i;
 	int		j;
@@ -35,21 +47,22 @@ struct s_ft_ssl_module	*get_module_for_command_name(char *cmd)
 				return (g_modules[i]);
 			}
 			j++;
-
 		}
 		i++;
 	}
 	return (NULL);
 }
 
-static void list_available_commands(void)
+static void						list_available_commands(void)
 {
-	char	*std_cmds[] = { NULL };
-	char	*cipher_cmds[] = { NULL };
-	char	**md_cmds = g_modules[MD_MODULE]->matching_commands;
+	char	**std_cmds;
+	char	**cipher_cmds;
+	char	**md_cmds;
+	int		i;
 
-	int i;
-
+	std_cmds = (char *[]){ NULL };
+	cipher_cmds = (char *[]){ NULL };
+	md_cmds = g_modules[MD_MODULE]->matching_commands;
 	xputserr("\nStandard commands:");
 	i = 0;
 	while (std_cmds[i])
@@ -64,7 +77,7 @@ static void list_available_commands(void)
 		xputserr(cipher_cmds[i++]);
 }
 
-int		load_module(char *command_name)
+int								load_module(char *command_name)
 {
 	if (!command_name)
 	{
@@ -81,7 +94,7 @@ int		load_module(char *command_name)
 	return (0);
 }
 
-int		module_run(int argc, char **argv)
+int								module_run(int argc, char **argv)
 {
 	return (g_active_module->run(argc, argv));
 }
