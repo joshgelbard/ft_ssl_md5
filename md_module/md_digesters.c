@@ -18,7 +18,7 @@ void	digest_file(int fileno, char *filename)
 	while ((count = read(fileno, buf, BUFSIZ - 1)) > 0)
 	{
 		buf[count] = '\0';
-		if (g_md_io_opts.echo == 1 && !g_md_io_opts.quiet_mode)
+		if (g_md_io_opts.echo == 1)
 			xprint(buf);
 		hash_update(&g_md_ctx, buf, count);
 	}

@@ -10,7 +10,7 @@ char *hash_get_string(struct s_hash_ctx *this)
 	char			*s;
 	size_t			i;
 
-	b = malloc(this->class->digest_size);
+	b = zalloc(this->class->digest_size);
 	xmemcpy(b, this->digest, this->class->digest_size);
 	if (this->class->is_big_endian)
 	{
@@ -22,7 +22,7 @@ char *hash_get_string(struct s_hash_ctx *this)
 			i++;
 		}
 	}
-	s = malloc(this->class->digest_size * 2 + 1);
+	s = zalloc(this->class->digest_size * 2 + 1);
 	mem2string(b, this->class->digest_size, s);
 	free(b);
 	return (s);

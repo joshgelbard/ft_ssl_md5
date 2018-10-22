@@ -69,7 +69,7 @@ struct s_hash_algorithm *define_md5_algorithm(void)
 {
 	struct s_hash_algorithm	*md5;
 
-	md5 = malloc(sizeof(*md5));
+	md5 = zalloc(sizeof(*md5));
 	md5->is_big_endian = 0;
 	md5->process_block = &md5_process_block;
 	md5->finish_initialize = &set_initial_digest_values;

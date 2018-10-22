@@ -37,7 +37,7 @@ struct s_hash_algorithm	*get_hash_algorithm_by_id(int id)
 
 void define_digest_algorithms(void)
 {
-	g_algos = malloc(HASH_ALGORITHM_COUNT * sizeof(struct s_hash_algorithm *));
+	g_algos = zalloc(HASH_ALGORITHM_COUNT * sizeof(struct s_hash_algorithm *));
 	g_algos[HASH_ALGORITHM_COUNT] = NULL;
 	g_algos[0] = define_md5_algorithm();
 	g_algos[1] = define_sha256_algorithm();

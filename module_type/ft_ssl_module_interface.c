@@ -12,7 +12,7 @@ static struct s_ft_ssl_module *g_active_module;
 
 void	initialize_modules(void)
 {
-	g_modules = malloc(sizeof(*g_modules) * (MODULE_COUNT + 1));
+	g_modules = zalloc(sizeof(*g_modules) * (MODULE_COUNT + 1));
 	g_modules[0] = initialize_md_module();
 }
 
@@ -31,6 +31,7 @@ struct s_ft_ssl_module	*get_module_for_command_name(char *cmd)
 		{
 			if (!xstrcmp(g_modules[i]->matching_commands[j], cmd))
 			{
+				g_modulename = cmd;
 				return (g_modules[i]);
 			}
 			j++;

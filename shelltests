@@ -1,0 +1,82 @@
+last_invocation=""
+last_result=""
+
+function runme() {
+	last_invocation="$1"
+	last_result=$(eval "$1 2>&1")
+
+}
+
+function expect() {
+	if [[ $last_result != $1 ]]; then
+		echo
+		printf "\e[31mtest failed.\e[39m expected '%s' to yield:\n" "$last_invocation"
+		echo "-->$1<--"
+		echo "but got"
+		echo "-->$last_result<--"
+	else
+		printf "%s: ok\n" "$last_invocation"
+	fi
+}
+
+runme 'echo "pickle rick" | ./ft_ssl md5'
+expect "c5e433c1dbd7ba01e3763a9483e74b04"
+
+runme 'echo "Do not pity the dead, Harry." | ./ft_ssl md5 -p'
+expect "Do not pity the dead, Harry.
+2d95365bc44bf0a298e09a3ab7b34d2f"
+
+runme 'echo "Pity the living." | ./ft_ssl md5 -q -r'
+expect "e20c3b973f63482a778f3fd1869b7f25"
+
+echo "And above all," > file
+runme './ft_ssl md5 file'
+expect 'MD5 (file) = 53d53ea94217b259c11a5a2d104ec58a'
+runme './ft_ssl md5 -r file'
+expect '53d53ea94217b259c11a5a2d104ec58a file'
+
+runme './ft_ssl md5 -s "pity those that aren'"'"'t following baerista on spotify."'
+expect 'MD5 ("pity those that aren'"'"'t following baerista on spotify.") = a3c990a1964705d9bf0e602f44572f5f'
+
+runme 'echo "be sure to handle edge cases carefully" | ./ft_ssl md5 -p file'
+expect 'be sure to handle edge cases carefully
+3553dc7dc5963b583c056d1b9fa3349c
+MD5 (file) = 53d53ea94217b259c11a5a2d104ec58a'
+
+runme 'echo "some of this will not make sense at first" | ./ft_ssl md5 file'
+expect 'MD5 (file) = 53d53ea94217b259c11a5a2d104ec58a'
+
+runme 'echo "but eventually you will understand" | ./ft_ssl md5 -p -r file'
+expect 'but eventually you will understand
+dcdd84e0f635694d2a943fa8d3905281
+53d53ea94217b259c11a5a2d104ec58a file'
+
+runme 'echo "GL HF let'"'"'s go" | ./ft_ssl md5 -p -s "foo" file'
+expect 'GL HF let'"'"'s go
+d1e3cc342b6da09480b27ec57ff243e2
+MD5 ("foo") = acbd18db4cc2f85cedef654fccc4a4d8
+MD5 (file) = 53d53ea94217b259c11a5a2d104ec58a'
+
+runme 'echo "one more thing" | ./ft_ssl md5 -r -p -s "foo" file -s "bar"'
+expect 'one more thing
+a0bd1876c6f011dd50fae52827f445f5
+acbd18db4cc2f85cedef654fccc4a4d8 "foo"
+53d53ea94217b259c11a5a2d104ec58a file
+./ft_ssl: md5: -s: No such file or directory
+./ft_ssl: md5: bar: No such file or directory'
+
+runme 'echo "just to be extra clear" | ./ft_ssl md5 -r -q -p -s "foo" file'
+expect 'just to be extra clear
+3ba35f1ea0d170cb3b9a752e3360286c
+acbd18db4cc2f85cedef654fccc4a4d8
+53d53ea94217b259c11a5a2d104ec58a'
+
+echo "https://www.youtube.com/watch?v=w-5yAtMtrSM" > big_smoke_order_remix
+runme './ft_ssl sha256 -q big_smoke_order_remix'
+expect 'a8dc621c3dcf18a8a2eddae1845e8e5f6498970a867056ac5f7121ac3d66cfd9'
+
+runme './ft_ssl sha256 big_smoke_order_remix'
+expect 'SHA256 (big_smoke_order_remix) = a8dc621c3dcf18a8a2eddae1845e8e5f6498970a867056ac5f7121ac3d66cfd9'
+
+runme './ft_ssl sha256 -s "wubba lubba dub dub"'
+expect 'SHA256 ("wubba lubba dub dub") = 23a0944d11b5a54f1970492b5265c732044ae824b7d5656acb193e7f0e51e5fa'

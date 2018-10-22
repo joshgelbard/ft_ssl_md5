@@ -5,6 +5,7 @@
 #include "util.h"
 
 char	*g_progname = NULL;
+char	*g_modulename = NULL;
 
 int		main(int argc, char **argv)
 {

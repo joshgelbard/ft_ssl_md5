@@ -94,7 +94,7 @@ struct s_ft_ssl_module	*initialize_md_module(void)
 {
 	struct s_ft_ssl_module	*md_module;
 
-	md_module = malloc(sizeof(*md_module));
+	md_module = zalloc(sizeof(*md_module));
 
 	md_module->module_id = MD_MODULE;
 	md_module->matching_commands = md_module_commands;

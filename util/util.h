@@ -3,6 +3,7 @@
 # include <string.h>
 
 extern char	*g_progname;
+extern char	*g_modulename;
 
 size_t		xstrlen(char *s);
 void		xprint(char *s);

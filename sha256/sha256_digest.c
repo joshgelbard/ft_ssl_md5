@@ -99,7 +99,7 @@ struct s_hash_algorithm *define_sha256_algorithm(void)
 {
 	struct s_hash_algorithm	*sha256;
 
-	sha256 = malloc(sizeof(*sha256));
+	sha256 = zalloc(sizeof(*sha256));
 	sha256->is_big_endian = 1;
 	sha256->process_block = &sha256_process_block;
 	sha256->finish_initialize = &set_initial_digest_values;

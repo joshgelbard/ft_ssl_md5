@@ -94,6 +94,11 @@ void	xperror(char *s)
 		xprinterr(g_progname);
 		xprinterr(": ");
 	}
+	if (g_modulename)
+	{
+		xprinterr(g_modulename);
+		xprinterr(": ");
+	}
 	if (s)
 	{
 		xprinterr(s);

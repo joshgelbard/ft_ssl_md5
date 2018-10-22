@@ -44,8 +44,9 @@ void	md_output(char *tag)
 	}
 	if (g_md_io_opts.digest_before_tag)
 	{
-		xputs(digest);
+		xprint(digest);
 		md_print_tag(tag);
+		xputs("");
 	}
 	else
 	{
