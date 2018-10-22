@@ -6,18 +6,17 @@
 /*   By: jgelbard <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/10/22 09:07:14 by jgelbard          #+#    #+#             */
-/*   Updated: 2018/10/22 09:20:07 by jgelbard         ###   ########.fr       */
+/*   Updated: 2018/10/22 09:34:38 by jgelbard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "md5_digest.h"
-#include "md5_internal.h"
 #include "algorithm_lookup.h"
 #include "hash_algorithm.h"
 #include "hash_ctx.h"
-#include <stdint.h>
-#include <string.h>
+#include "md5_internal.h"
 #include "util.h"
+#include <stdint.h>
 
 #define A digest[(0 + (4 - step % 4)) % 4]
 #define B digest[(1 + (4 - step % 4)) % 4]

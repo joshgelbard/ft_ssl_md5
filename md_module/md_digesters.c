@@ -6,20 +6,17 @@
 /*   By: jgelbard <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/10/22 09:07:12 by jgelbard          #+#    #+#             */
-/*   Updated: 2018/10/22 09:07:12 by jgelbard         ###   ########.fr       */
+/*   Updated: 2018/10/22 09:34:29 by jgelbard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "md_digesters.h"
-#include <unistd.h>
-#include <fcntl.h>
-#include <stdio.h>
-#include "md_module_internal.h"
 #include "hash_digest_common.h"
+#include "md_module_internal.h"
 #include "md_module_output.h"
-#include <string.h>
-#include "hash_ctx.h"
 #include "util.h"
+#include <stdio.h>
+#include <unistd.h>
 
 void	digest_file(int fileno, char *filename)
 {

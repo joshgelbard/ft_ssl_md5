@@ -6,11 +6,10 @@
 /*   By: jgelbard <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/10/22 09:07:13 by jgelbard          #+#    #+#             */
-/*   Updated: 2018/10/22 09:07:13 by jgelbard         ###   ########.fr       */
+/*   Updated: 2018/10/22 09:31:50 by jgelbard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <stdint.h>
 #include "md5_internal.h"
 
 uint32_t g_md5_t[64] = {
