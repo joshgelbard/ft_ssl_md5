@@ -6,11 +6,11 @@
 /*   By: jgelbard <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/10/22 09:07:08 by jgelbard          #+#    #+#             */
-/*   Updated: 2018/10/22 09:07:08 by jgelbard         ###   ########.fr       */
+/*   Updated: 2018/10/22 09:25:40 by jgelbard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <stdint.h>
+#include "sha256_digest.h"
 #include "algorithm_lookup.h"
 #include "hash_ctx.h"
 #include "hash_algorithm.h"

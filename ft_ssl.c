@@ -6,13 +6,10 @@
 /*   By: jgelbard <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/10/22 09:07:07 by jgelbard          #+#    #+#             */
-/*   Updated: 2018/10/22 09:07:07 by jgelbard         ###   ########.fr       */
+/*   Updated: 2018/10/22 09:16:13 by jgelbard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <stdio.h>
-#include <stdlib.h>
-#include "algorithm_lookup.h"
 #include "ft_ssl_module_interface.h"
 #include "util.h"
 

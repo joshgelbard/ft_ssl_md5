@@ -6,11 +6,11 @@
 /*   By: jgelbard <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/10/22 09:07:14 by jgelbard          #+#    #+#             */
-/*   Updated: 2018/10/22 09:07:14 by jgelbard         ###   ########.fr       */
+/*   Updated: 2018/10/22 09:20:07 by jgelbard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "md5.h"
+#include "md5_digest.h"
 #include "md5_internal.h"
 #include "algorithm_lookup.h"
 #include "hash_algorithm.h"

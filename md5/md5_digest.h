@@ -1,18 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   sha256.h                                           :+:      :+:    :+:   */
+/*   md5_digest.h                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jgelbard <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2018/10/22 09:07:08 by jgelbard          #+#    #+#             */
-/*   Updated: 2018/10/22 09:07:08 by jgelbard         ###   ########.fr       */
+/*   Created: 2018/10/22 09:20:49 by jgelbard          #+#    #+#             */
+/*   Updated: 2018/10/22 09:24:04 by jgelbard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef SSL_SHA256_H
-# define SSL_SHA256_H
+#ifndef MD5_DIGEST_H
+# define MD5_DIGEST_H
 
 struct s_hash_algorithm;
-struct s_hash_algorithm *define_sha256_algorithm(void);
+struct s_hash_algorithm *define_md5_algorithm(void);
 #endif
