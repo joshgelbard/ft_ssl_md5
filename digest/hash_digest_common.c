@@ -31,6 +31,10 @@ char *hash_get_string(struct s_hash_ctx *this)
 void hash_initialize(struct s_hash_algorithm *class,
 		struct s_hash_ctx *instance)
 {
+	if (instance->digest)
+		free(instance->digest);
+	if (instance->block)
+		free(instance->block);
 	instance->digest = zalloc(class->digest_size);
 	instance->block = zalloc(class->block_size);
 	instance->block_offset = 0;

@@ -30,7 +30,6 @@ OBJECTS = \
 MODULES = \
 		  digest \
 		  md5 \
-		  test \
 		  util \
 		  sha256 \
 		  md_module \
@@ -56,17 +55,7 @@ dev: CFLAGS += -include string.h -include assert.h -include stdio.h -Wno-error
 dev: all
 redev: fclean dev
 
-TEST_MAIN = test-runner
-TEST_OBJECTS = \
-			   test_md5_digest.o \
-			   test_sha256_digest.o \
+.PHONY: all clean fclean re dev redev
 
-test: CFLAGS += -include string.h -include assert.h -include stdio.h -Wno-error
-test: $(TEST_MAIN)
-$(TEST_MAIN): $(TEST_MAIN).o $(TEST_OBJECTS) $(OBJECTS)
-retest: fclean test
-
-.PHONY: all clean fclean re dev test redev retest
-
-DEPENDS = $(OBJECTS:.o=.d) $(TEST_OBJECTS:.o=.d)
+DEPENDS = $(OBJECTS:.o=.d)
 -include $(DEPENDS)
