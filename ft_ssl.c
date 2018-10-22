@@ -2,7 +2,6 @@
 #include <stdlib.h>
 #include "algorithm_lookup.h"
 #include "ft_ssl_module_interface.h"
-#include "digest.h"
 
 int main(int argc, char **argv) {
 	initialize_modules();
